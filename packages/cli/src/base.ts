@@ -2,6 +2,7 @@ import { ContractKit, newKitFromWeb3 } from '@celo/contractkit'
 import { CeloProvider } from '@celo/contractkit/lib/providers/celo-provider'
 import { Command, flags } from '@oclif/command'
 import { ParserOutput } from '@oclif/parser/lib/parse'
+import net, { Socket } from 'net'
 import Web3 from 'web3'
 import { getNodeUrl } from './utils/config'
 import { injectDebugProvider } from './utils/eth-debug-provider'
@@ -57,7 +58,10 @@ export abstract class BaseCommand extends LocalCommand {
     if (!this._web3) {
       const res: ParserOutput<any, any> = this.parse()
       const nodeUrl = (res.flags && res.flags.node) || getNodeUrl(this.config.configDir)
-      this._web3 = new Web3(nodeUrl)
+      this._web3 =
+        nodeUrl && nodeUrl.endsWith('.ipc')
+          ? new Web3(new Web3.providers.IpcProvider(nodeUrl, net))
+          : new Web3(nodeUrl)
       this._originalProvider = this._web3.currentProvider
       injectDebugProvider(this._web3)
     }
@@ -95,8 +99,11 @@ export abstract class BaseCommand extends LocalCommand {
       if (this._originalProvider && this._originalProvider.hasOwnProperty('connection')) {
         // Close the web3 connection or the CLI hangs forever.
         const connection = this._originalProvider.connection
-        if (connection.hasOwnProperty('_connection')) {
-          connection._connection.close()
+        // Net (IPC provider)
+        if (connection instanceof Socket) {
+          connection.destroy()
+        } else {
+          connection.close()
         }
       }
     } catch (error) {
