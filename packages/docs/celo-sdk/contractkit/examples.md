@@ -2,10 +2,9 @@
 
 ## Interacting with cGold & cDollar
 
-celo-blockchain has two initial coins: cGold and cDollar (stableToken).
-Both implement the ERC20 standard, and to interact with them is as simple as:
+celo-blockchain has two initial coins: cGold and cDollar \(stableToken\). Both implement the ERC20 standard, and to interact with them is as simple as:
 
-```ts
+```typescript
 const goldtoken = await kit.contract.getGoldToken()
 
 const balance = await goldtoken.balanceOf(someAddress)
@@ -13,7 +12,7 @@ const balance = await goldtoken.balanceOf(someAddress)
 
 To send funds:
 
-```ts
+```typescript
 const oneGold = kit.web3.utils.toWei('1', 'ether')
 const tx = await goldtoken.transfer(someAddress, oneGold).send({
   from: myAddress,
@@ -25,7 +24,7 @@ const receipt = await tx.waitReceipt()
 
 To interact with cDollar, is the same but with a different contract:
 
-```ts
+```typescript
 const stabletoken = await kit.contract.getStableToken()
 ```
 
@@ -35,9 +34,9 @@ Apart from GoldToken and StableToken, there are many core contracts.
 
 For the moment, we have contract wrappers for:
 
-- Exchange (Uniswap kind exchange between Gold and Stable tokens)
-- Validators
-- LockedGold
+* Exchange \(Uniswap kind exchange between Gold and Stable tokens\)
+* Validators
+* LockedGold
 
 In the following weeks, we will add some wrappers for all other contracts
 
@@ -47,7 +46,7 @@ Some user might want to access web3 native contract wrappers.
 
 To do so, you can:
 
-```ts
+```typescript
 const web3Exchange = await kit._web3Contracts.getExchange()
 ```
 
@@ -55,12 +54,11 @@ We expose native wrappers for all Celo core contracts.
 
 ## A Note About Contract Addresses
 
-Celo Core Contracts addresses, can be obtained by looking at the `Registry` contract.
-That's actually how `kit` obtain them.
+Celo Core Contracts addresses, can be obtained by looking at the `Registry` contract. That's actually how `kit` obtain them.
 
 We expose the registry api, which can be accessed by:
 
-```ts
+```typescript
 const goldTokenAddress = await kit.registry.addressFor(CeloContract.GoldToken)
 ```
 
@@ -68,9 +66,9 @@ const goldTokenAddress = await kit.registry.addressFor(CeloContract.GoldToken)
 
 Celo transaction object is not the same as Ethereum's. There are three new fields present:
 
-- feeCurrency (address of the ERC20 contract to use to pay for gas and the gateway fee)
-- gatewayFeeRecipient (coinbase address of the full serving the light client's trasactions)
-- gatewayFee (value paid to the gateway fee recipient, denominated in the fee currency)
+* feeCurrency \(address of the ERC20 contract to use to pay for gas and the gateway fee\)
+* gatewayFeeRecipient \(coinbase address of the full serving the light client's trasactions\)
+* gatewayFee \(value paid to the gateway fee recipient, denominated in the fee currency\)
 
 This means that using `web3.eth.sendTransaction` or `myContract.methods.transfer().send()` should be avoided.
 
@@ -78,7 +76,7 @@ Instead, `kit` provides an utility method to send transaction in both scenarios.
 
 For a raw transaction:
 
-```ts
+```typescript
 const tx = kit.sendTransaction({
   from: myAddress,
   to: someAddress,
@@ -90,7 +88,7 @@ const receipt = await tx.waitReceipt()
 
 When interacting with a web3 contract object:
 
-```ts
+```typescript
 const goldtoken = await kit._web3Contracts.getGoldToken()
 const oneGold = kit.web3.utils.toWei('1', 'ether')
 
@@ -109,3 +107,4 @@ So set the environment variable `DEBUG` as:
 ```bash
 DEBUG="kit:*,
 ```
+

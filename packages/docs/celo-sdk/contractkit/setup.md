@@ -16,7 +16,7 @@ You will need node version `8.13.0` or higher.
 
 To start working with contractkit you need a `kit` instance:
 
-```ts
+```typescript
 import { newKit } from '@celo/contractkit'
 
 const kit = newKit('https://alfajores-forno.celo-testnet.org')
@@ -24,7 +24,7 @@ const kit = newKit('https://alfajores-forno.celo-testnet.org')
 
 To access web3:
 
-```ts
+```typescript
 const web3 = kit.web3
 
 web3.eth.getBalance(someAddress)
@@ -34,7 +34,7 @@ web3.eth.getBalance(someAddress)
 
 `kit` allows you to set default transaction options:
 
-```ts
+```typescript
 import { CeloContract } from '@celo/contractkit'
 
 // default from
@@ -44,3 +44,4 @@ await kit.setFeeCurrency(CeloContract.StableToken)
 ```
 
 You're ready to start using ContractKit! See the [Examples](examples.md) section to learn more.
+

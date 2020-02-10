@@ -3,6 +3,7 @@
 ## Overview
 
 **Epoch Rewards** are similar to the familiar notion of block rewards in other blockchains, minting and distributing new units of Celo Gold as blocks are produced, to create several kinds of incentives. Epoch rewards are paid in the final block of the epoch and are used to:
+
 * Distributed [rewards for validators and validator groups](validator-rewards.md)
 * Distribute [rewards to holders of Locked Celo Gold](locked-gold-rewards.md) voting for groups that elected validators
 * Make payments into a [Community Fund](community-fund.md) for protocol infrastructure grants
@@ -11,7 +12,7 @@
 
 A total of 400 million Celo Gold will be released for epoch rewards over time. Celo Gold is one of Celo’s reserve currencies and can be used as utility token in Celo. It has a fixed total supply and in the long term will exhibit deflationary characteristics like Bitcoin.
 
-The total amount of disbursements is determined at the end of every epoch via a two step process. In step one, economically desired **on-target rewards** are derived. These are explained in the following pages. Several factors can increase or decrease the value of the payments that would ideally be made in a given epoch (including the Celo Gold to Dollar exchange rate, the collateralization of the reserve, and whether payments to validators or groups are held back due to poor uptime or prior slashing).
+The total amount of disbursements is determined at the end of every epoch via a two step process. In step one, economically desired **on-target rewards** are derived. These are explained in the following pages. Several factors can increase or decrease the value of the payments that would ideally be made in a given epoch \(including the Celo Gold to Dollar exchange rate, the collateralization of the reserve, and whether payments to validators or groups are held back due to poor uptime or prior slashing\).
 
 In step two, these on-target rewards are adjusted to generate a drift towards a predefined target epoch rewards schedule. This process aims to solve the trade-off between paying reasonable rewards in terms of purchasing power and avoiding excessive over- or underspending with respect to a predefined epoch rewards schedule. More detail about the two steps is provided below.
 
@@ -24,3 +25,4 @@ There is a target schedule for the release of Celo Gold epoch rewards. The propo
 The total **actual rewards** paid out at the end of a given epoch result from multiplying the total on-target rewards with a `Rewards Multiplier`. This adjustment factor is a function of the percentage deviation of the remaining epoch rewards from the target epoch rewards remaining. It evaluates to `1` if the remaining epoch rewards are at the target and to smaller \(or larger\) than `1` if the remaining rewards are below \(or above, respectively\) the target. This creates a drag towards the target schedule.
 
 The sensitivity of the adjustment factor to the percentage deviation from the target are governable parameters: one for an underspend, one for an overspend.
+

@@ -1,4 +1,4 @@
-# Setup
+# Getting Started
 
 To get started, it is easiest to just use our expo base template at [https://github.com/celo-org/dappkit-base](https://github.com/celo-org/dappkit-base).
 
@@ -42,7 +42,7 @@ yarn add node-libs-react-native vm-browserify
 
 You will need to add the following `rn-cli.config.js` to your project root
 
-```js
+```javascript
 const crypto = require.resolve('crypto-browserify')
 const url = require.resolve('url/')
 module.exports = {
@@ -98,3 +98,4 @@ YellowBox.ignoreWarnings([
   "Warning: The provided value 'ms-stream",
 ])
 ```
+

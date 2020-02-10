@@ -8,10 +8,10 @@ Changes are managed via the Celo `Governance` smart contract. This contract acts
 
 The change procedure happens in the following phases:
 
-1.  Proposal
-2.  Approval
-3.  Referendum
-4.  Execution
+1. Proposal
+2. Approval
+3. Referendum
+4. Execution
 
 {% hint style="info" %}
 **Note:** the timings mentioned in the rest of this section are for the Alfajores Testnet. It is expected that mainnet timings will be much longer to allow for proper proposal review and engagement.
@@ -34,3 +34,4 @@ Once the Approval phase is over, approved proposals graduate to the referendum p
 ## Execution
 
 Proposals that graduate from the Referendum phase to the execution phase may be executed by anyone, triggering a “call” operation code with the arguments defined in the proposal, originating from the `Governance` smart contract. Proposals expire from this phase after two days.
+

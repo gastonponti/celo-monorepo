@@ -8,7 +8,7 @@ Identifies an account on Celo. There are two types of account. **Externally owne
 
 A unique identifier for an account on the Celo blockchain.
 
-## [Alfajores](alfajores-testnet.md)
+## [Alfajores](alfajores-testnet/)
 
 The first public Celo test network, available for developers to use freely subject to the [Alfajores Testnet Disclaimer](../important-information/alfajores-testnet-disclaimer.md).
 
@@ -20,12 +20,11 @@ Generally, support for an entity having an associated identity. In Celo, each at
 
 A service operated by validators that sends signed SMS messages in order to allow accounts to prove they have access to a phone number.
 
-## [Baklava](baklava-testnet.md)
+## [Baklava](baklava-testnet/)
 
-The second public Celo test network, used for [The Great Celo Stake Off](https://www.celo.org/stake-off)
-subject to the [Baklava Testnet Disclaimer](../important-information/baklava-testnet-disclaimer.md).
+The second public Celo test network, used for [The Great Celo Stake Off](https://www.celo.org/stake-off) subject to the [Baklava Testnet Disclaimer](../important-information/baklava-testnet-disclaimer.md).
 
-## Block<a name="block"></a>
+## Block
 
 The unit of update to the blockchain. A block consist of a header identifying its position in the chain and other metadata, and a body that contains a list of transactions, and data structures that describe the new state after executing those transactions.
 
@@ -33,7 +32,7 @@ The unit of update to the blockchain. A block consist of a header identifying it
 
 A database maintained by a distributed set of computers that do not share a trust relationship or common ownership. This arrangement is referred to as decentralized. The content of a blockchain's database, or ledger, is authenticated using cryptographic techniques, preventing its contents being added to, edited or removed except according to a protocol operated by the network as a whole.
 
-## Byzantine Fault Tolerant (BFT) Consensus
+## Byzantine Fault Tolerant \(BFT\) Consensus
 
 A form of consensus algorithm in which up to a third of participants can be faulty or malicious.
 
@@ -51,11 +50,11 @@ An open platform that makes financial tools accessible to anyone with a mobile p
 
 ## Claim
 
-Part of the metadata that Celo can associate with an address, a claim is used by an account to assert it has control over a particular off-chain entity (for example, a DNS domain name, an account on a third party service, etc). Claims can only be verified off-chain.
+Part of the metadata that Celo can associate with an address, a claim is used by an account to assert it has control over a particular off-chain entity \(for example, a DNS domain name, an account on a third party service, etc\). Claims can only be verified off-chain.
 
 ## Client
 
-See [Node](#node).
+See [Node](glossary.md#node).
 
 ## Consensus
 
@@ -135,13 +134,13 @@ The proportion of epoch rewards for an elected validator that is passed to the v
 
 ## Header
 
-See [Block](#block).
+See [Block](glossary.md#block).
 
 ## HSM
 
 Hardware Security Module. A hardware device that hosts one or more private keys and signs data without passing the key off the device.
 
-## [Community Fund](../celo-codebase/protocol/proof-of-stake/community-fund.md)
+## [Community Fund](../celo-codebase/protocol/proof-of-stake/epoch-rewards/community-fund.md)
 
 An account that supports the development and operational costs of the Celo protocol. The Community Fund is maintained by a transfer made as part of Epoch Rewards, and is intended to cover costs beyond the other specific incentives provided to validators and validator groups. Awards can be made through an on-chain governance proposal.
 
@@ -171,19 +170,19 @@ An interaction that takes place solely through a transaction being executed on t
 
 ## Proof of Stake
 
-The system that determines the participants in a Byzantine Fault Tolerant consensus mechanism. [Celo's Proof of Stake mechanism](../celo-codebase/protocol/proof-of-stake/README.md) permits accounts to convert units of Celo Gold into Locked Gold then vote for Validator Groups, such that an election held at the end of every epoch selects a new set of validators for the following epoch.
+The system that determines the participants in a Byzantine Fault Tolerant consensus mechanism. [Celo's Proof of Stake mechanism](../celo-codebase/protocol/proof-of-stake/) permits accounts to convert units of Celo Gold into Locked Gold then vote for Validator Groups, such that an election held at the end of every epoch selects a new set of validators for the following epoch.
 
 ## Savings Circle
 
-A common practice in societies without easy access to banking (source); a peer-to-peer savings and loan group.
+A common practice in societies without easy access to banking \(source\); a peer-to-peer savings and loan group.
 
 ## SBAT
 
-Should Be Able To (Acronym used in GitHub issue title)
+Should Be Able To \(Acronym used in GitHub issue title\)
 
 ## SNBAT
 
-Should Not Be Able To (Acronym used in GitHub issue title)
+Should Not Be Able To \(Acronym used in GitHub issue title\)
 
 ## Sync
 
@@ -191,7 +190,7 @@ The process, when a node joins the network, of requesting and receiving block he
 
 ## SDK
 
-Software Development Kit. Generally, a suite of developer tools that enable applications to be built on a platform. Celo's SDK currently comprises two components, [DAppKit](../developer-resources/dappkit/README.md) and [ContractKit](../developer-resources/contractkit/README.md).
+Software Development Kit. Generally, a suite of developer tools that enable applications to be built on a platform. Celo's SDK currently comprises two components, [DAppKit](../celo-sdk/dappkit/) and [ContractKit](../celo-sdk/contractkit/).
 
 ## Slashing
 
@@ -235,7 +234,7 @@ A variable that is tracked for each validator by the Proof of Stake mechanism th
 
 ## Validator
 
-Both: the entity in the Proof of Stake mechanism that can be associated with a validator group and subsequently elected; and a running instance of the Celo Blockchain software that is configured and ready (if elected) to participate in the Byzantine Fault Tolerant consensus algorithm to agree new blocks to append to the blockchain ledger.
+Both: the entity in the Proof of Stake mechanism that can be associated with a validator group and subsequently elected; and a running instance of the Celo Blockchain software that is configured and ready \(if elected\) to participate in the Byzantine Fault Tolerant consensus algorithm to agree new blocks to append to the blockchain ledger.
 
 ## Validator Group
 
@@ -243,9 +242,9 @@ The entity in the Proof of Stake mechanism that can associate validators, receiv
 
 ## Validator Set
 
-The set of elected validators (with respect to a specific epoch) that participate in consensus
+The set of elected validators \(with respect to a specific epoch\) that participate in consensus
 
 ## Wallet
 
-A DApp that allows a user to manage an account, and usually stores the associated private key.
-DApp that allows a user to manage an account, and usually stores the associated private key.
+A DApp that allows a user to manage an account, and usually stores the associated private key. DApp that allows a user to manage an account, and usually stores the associated private key.
+

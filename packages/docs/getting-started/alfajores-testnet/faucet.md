@@ -26,7 +26,7 @@ You can also use the Celo Blockchain client to create and manage account keypair
 
 #### **Prerequisites**
 
-- **You have Docker installed.** If you don’t have it already, follow the instructions here: [Get Started with Docker](https://www.docker.com/get-started). It will involve creating or signing in with a Docker account, downloading a desktop app, and then launching the app to be able to use the Docker CLI. If you are running on a Linux server, follow the instructions for your distro [here](https://docs.docker.com/install/#server). You may be required to run Docker with sudo depending on your installation environment.
+* **You have Docker installed.** If you don’t have it already, follow the instructions here: [Get Started with Docker](https://www.docker.com/get-started). It will involve creating or signing in with a Docker account, downloading a desktop app, and then launching the app to be able to use the Docker CLI. If you are running on a Linux server, follow the instructions for your distro [here](https://docs.docker.com/install/#server). You may be required to run Docker with sudo depending on your installation environment.
 
 Create and cd into the directory where you want to store the keypair. You can name this whatever you’d like, but here’s a default you can use:
 
@@ -59,3 +59,4 @@ Visit [celo.org/build/faucet](https://celo.org/build/faucet), and enter your acc
 Each time you complete a faucet request, your account is funded with an additional 10 Celo Dollars and 5 Celo Gold.
 
 You may do this multiple times if you require more funds.
+

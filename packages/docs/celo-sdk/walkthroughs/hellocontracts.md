@@ -6,13 +6,13 @@ This guide walks you through the basics of how to deploy your own smart contract
 
 This guide assumes that you have a basic Node/[NPM](https://www.npmjs.com/get-npm) setup. If so, you can install truffle with:
 
-```
+```text
 npm install -g truffle
 ```
 
 In your desired project folder, intiialize a new truffle project:
 
-```
+```text
 truffle init
 ```
 
@@ -20,13 +20,13 @@ truffle init
 
 Let's add a contract with
 
-```
+```text
 truffle create contract HelloWorld
 ```
 
 Our contract will just store a name for now:
 
-```solidity
+```text
 pragma solidity >=0.5.0 <0.7.0;
 
 contract HelloWorld {
@@ -56,19 +56,19 @@ module.exports = function(deployer) {
 
 To be able to actually deploy it though, we need a blockchain. For local development and testing, you can use our fork of ganache:
 
-```
+```text
 npm install -g @celo/ganache-cli
 ```
 
 And then start ganache with:
 
-```
+```text
 ganache-cli --port 7545
 ```
 
 In your `truffle-config.js`, you'll want to add your local test network under networks:
 
-```
+```text
   networks: {
     test: {
       host: "127.0.0.1",
@@ -80,13 +80,13 @@ In your `truffle-config.js`, you'll want to add your local test network under ne
 
 Then you can deploy your contract to your local network first:
 
-```
+```text
 truffle migrate --network test
 ```
 
 You can interact with your contract by running the truffle console:
 
-```
+```text
 truffle console --network test
 truffle(test)> contract = await HelloWorld.deployed()
 undefined
@@ -101,7 +101,7 @@ truffle(test)> contract.getName()
 
 ## Deploy to Alfajores
 
-When you are ready to deploy your contract to Alfajores, you'll need a Celo client connected to the testnet. We'll run a node somewhat similarly to the [Instructions of running a full node on Baklava](/getting-started/baklava-testnet/running-a-full-node):
+When you are ready to deploy your contract to Alfajores, you'll need a Celo client connected to the testnet. We'll run a node somewhat similarly to the [Instructions of running a full node on Baklava](https://github.com/critesjosh/celo-monorepo/tree/8acf779f504c30e70b25f97e4667af2da243cb69/getting-started/baklava-testnet/running-a-full-node/README.md):
 
 ```bash
 export CELO_IMAGE=us.gcr.io/celo-testnet/celo-node:alfajores
@@ -139,13 +139,13 @@ docker run -v $PWD:/root/.celo --rm -it $CELO_IMAGE account new
 
 It will prompt you for a passphrase, ask you to confirm it, and then will output your account address: `Address: {<YOUR-ACCOUNT-ADDRESS>}`
 
-Save this address to an environment variables, so that you can reference it below (don't include the braces):
+Save this address to an environment variables, so that you can reference it below \(don't include the braces\):
 
 ```bash
 export CELO_ACCOUNT_ADDRESS=<YOUR-ACCOUNT-ADDRESS>
 ```
 
-_Note: this environment variable will only persist while you have this terminal window open. If you want this environment variable to be available in the future, you can add it to your `~/.bash_profile_
+_Note: this environment variable will only persist while you have this terminal window open. If you want this environment variable to be available in the future, you can add it to your \`~/.bash\_profile_
 
 ### Configure the node
 
@@ -175,7 +175,7 @@ You can follow the logs with
 docker logs -f celo-ultralight-node
 ```
 
-After a few seconds of syncing (with [Celo's ultralight sync](celo-codebase/protocol/consensus/ultralight-sync)), you should be able to query the balance of your account:
+After a few seconds of syncing \(with [Celo's ultralight sync](https://github.com/critesjosh/celo-monorepo/tree/8acf779f504c30e70b25f97e4667af2da243cb69/packages/docs/developer-resources/walkthroughs/celo-codebase/protocol/consensus/ultralight-sync/README.md)\), you should be able to query the balance of your account:
 
 ```bash
 docker exec celo-ultralight-node geth attach --exec 'eth.getBalance("<YOUR-ACCOUNT-ADDRESS>")'
@@ -193,7 +193,7 @@ docker exec celo-ultralight-node geth attach --exec 'personal.unlockAccount("<YO
 
 In your `truffle-config.js` reference your node:
 
-```
+```text
 alfajores: {
   host: "127.0.0.1",
   port: 8545,
@@ -203,10 +203,11 @@ alfajores: {
 
 Then you should be able to deploy your contract with:
 
-```
+```text
 truffle migrate --network alfajores
 ```
 
 You can verify your contract deployment on [Blockscout](https://alfajores-blockscout.celo-testnet.org/), as well as interact with your new contract with the `truffle console --network alfajores`. Congratulations!
 
 As you can see, all the goodies from Ethereum apply to Celo, so virtually all tutorials and other content should be easily translatable to Celo. Check out [https://celo.org/build](https://celo.org/build) for more resources!
+

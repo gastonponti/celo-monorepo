@@ -1,8 +1,8 @@
-# Electing Validators
+# Validator Elections
 
-The active validator set is updated by running an election in the final block of each epoch, after processing transactions and [Epoch Rewards](epoch-rewards.md).
+The active validator set is updated by running an election in the final block of each epoch, after processing transactions and [Epoch Rewards](epoch-rewards/).
 
-## <a name="voting-cap"></a>Group Voting Caps
+## Group Voting Caps
 
 One way to consider the security of a Proof of Stake system is the marginal cost of getting a malicious validator elected. In a steady state, assuming the Celo community set the incentives appropriately, we can assume that a full complement of validators is elected, which means the attack cost is the cost of acquiring sufficient Celo Gold to receive more votes than the currently elected validator with fewest votes, and thereby supplant it.
 
@@ -20,10 +20,11 @@ The Celo protocol allows an account to divide its vote between up to three group
 
 ![](https://storage.googleapis.com/celo-website/docs/election.jpg)
 
-The `Election` contract is called from the IBFT block finalization code to select the validators for the following epoch. The contract maintains a sorted list of the Locked Gold voting (either pending or activated) for each Validator Group. The [D’Hondt method](https://en.wikipedia.org/wiki/D'Hondt_method), a closed party list form of proportional representation, is applied to iteratively select validators from the Validator Groups with the greatest associated vote balances.
+The `Election` contract is called from the IBFT block finalization code to select the validators for the following epoch. The contract maintains a sorted list of the Locked Gold voting \(either pending or activated\) for each Validator Group. The \[D’Hondt method\]\([https://en.wikipedia.org/wiki/D'Hondt\_method](https://en.wikipedia.org/wiki/D'Hondt_method)\), a closed party list form of proportional representation, is applied to iteratively select validators from the Validator Groups with the greatest associated vote balances.
 
 The list of groups is first filtered to remove those that have not achieved a certain fraction of the votes of the total voting Locked Gold.
 
 Then, in the first iteration, the algorithm assigns the first seat to the group that has at least one member and with the most votes. Thereafter, it assigns the seat to the group that would ‘pay’, if its next validator were elected, the highest vote averaged over its candidates that have been selected so far plus the one under consideration.
 
 There is a minimum target and a maximum cap on the number of active validators that may be selected. If the minimum target is not reached, the election aborts and no change is made to the validator set this epoch.
+

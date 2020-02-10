@@ -1,131 +1,187 @@
 # Celo Overview
 
-Celo’s aim is to empower anyone with a smartphone anywhere in the world to have access to financial services, send money to phone numbers, and pay merchants -- on a decentralized platform that is operated by a community of users.
+In this guide we are going to write a Node.js script to introduce some of the basic concepts that are important to understand how Celo works. This will get us started with connecting to the Celo network and learning how to develop more advanced applications.
 
-To achieve this, the Celo project is building a complete stack of new blockchain software, core libraries that run on that blockchain, and end user applications including a Wallet app that communicate with that logic.
-
-This page provides some background on blockchain technology and explores the Celo software stack.
-
-### Background and Key Concepts
-
-A **blockchain** or **cryptographic network** is a broad term used to describe a database maintained by a distributed set of computers that do not share a trust relationship or common ownership. This arrangement is referred to as **decentralized**. The content of a blockchain's database, or **ledger**, is authenticated using cryptographic techniques, preventing its contents being added to, edited or removed except according to a protocol operated by the network as a whole.
-
-The code of the Celo Blockchain has shared ancestry with [Ethereum](https://www.ethereum.org), blockchain software for building general-purpose decentralized applications. Celo differs from Ethereum in several important areas as described in the following sections. However, it inherits a number of key concepts.
-
-Ethereum applications are built using **smart contracts**. Smart contracts are programs written in languages like [Solidity](https://solidity.readthedocs.io/en/v0.5.10/) that produce bytecode for the **Ethereum Virtual Machine** or **EVM**, a runtime environment. Programs encoded in smart contracts receive messages and manipulate the blockchain ledger and are termed **on-chain**.
-
-Celo has a native unit of accounting, the cryptocurrency **Celo Gold**, equivalent to Ether in Ethereum. Celo's ledger consists of **accounts**, identified by an **address**. There are two types of account. **Externally owned accounts** have an associated Celo Gold balance and are controlled by a user holding the associated public-private keypair. **Contract accounts** contain the code and data of a single smart contract which can be called and manipulate its own stored data.
-
-**ERC-20** is a standard interface for implementing cryptocurrencies or **tokens** as contracts, rather than via account balances. \(In Celo, Celo Gold has a duality as both the native currency and is also an ERC-20 token\).
-
-Users interact with the blockchain by creating signed **transactions.** These are requests to make a change to the ledger. They can: transfer value between accounts; execute a function in a smart contract and pass in arguments \(perhaps causing other smart contracts to be called, update their storage, or transfer value\); or create a new smart contract.
-
-The blockchain is updated by a protocol that takes the current state of the ledger, applies a number of transactions in turn, each of which may execute code and result in updates to the global state. This creates a new **block** that consists of a **header**, identifying the previous block and other metadata, and a data structure that describes the new state.
-
-To avoid Denial-of-Service attacks and ensure termination of calls to smart contract code, the account sending a transaction pays **transaction fees** for its execution steps using its own balance. Transactions specify a **maximum gas** which bounds the steps of execution before a transaction is reverted. A **gas price** determines the unit price for each step, and is used to prioritize which transactions the network applies. \(In Celo transaction fees can be paid in ERC-20 currencies and gas pricing works differently from Ethereum\).
-
-For a more in depth explanation of Ethereum, see the [Ethereum White Paper](https://github.com/ethereum/wiki/wiki/White-Paper) or [documentation](http://ethdocs.org/en/latest/introduction/what-is-ethereum.html#learn-about-ethereum).
-
-### The Celo Stack
-
-Celo is oriented around providing the simplest possible experience for end users, who may have no familiarity with cryptocurrencies, and may be using low cost devices with limited connectivity. To achieve this, the project takes a full-stack approach, where each layer of the stack is designed with the end user in mind while considering other stakeholders \(e.g. operators of nodes in the network\) involved in enabling the end user experience.
-
-The Celo stack is structured into the following logical layers:
-
-![](https://storage.googleapis.com/celo-website/docs/full-stack-diagram.jpg)
-
-- **Celo Blockchain**: An open cryptographic protocol that allows applications to make transactions with and run smart contracts in a secure and decentralized fashion. The Celo Blockchain code has shared ancestry with [Ethereum](https://www.ethereum.org), and maintains full EVM compatibility for smart contracts. However it uses a [Byzantine Fault Tolerant](http://pmg.csail.mit.edu/papers/osdi99.pdf) \(BFT\) consensus mechanism rather than Proof of Work, and has different block format, transaction format, client synchronization protocols, and gas payment and pricing mechanisms. The network’s native asset is Celo Gold, which is also an ERC-20 token.
-- **Celo Core Contracts**: A set of smart contracts running on the Celo Blockchain that comprise much of the logic of the platform features including ERC-20 stable currencies, identity attestations, Proof of Stake and governance. These smart contracts are upgradeable and managed by the decentralized governance process.
-- **Applications:** Applications for end users built on the Celo platform. The Celo Wallet app, the first of an ecosystem of applications, allows end users to manage accounts and make payments securely and simply by taking advantage of the innovations in the Celo protocol. Applications take the form of external mobile or backend software: they interact with the Celo Blockchain to issue transactions and invoke code that forms the Celo Core Contracts’ API. Third parties can also deploy custom smart contracts that their own applications can invoke, which in turn can leverage Celo Core Contracts. Applications may use centralized cloud services to provide some of their functionality: in the case of the Celo Wallet, push notifications and a transaction activity feed.
-
-The Celo Blockchain and Celo Core Contracts together comprise the **Celo Protocol**.
-
-### Topology of a Celo Network
-
-The topology of a Celo network consists of machines running the Celo Blockchain software in several distinct configurations:
-
-![](https://storage.googleapis.com/celo-website/docs/network.png)
-
-- **Validators:** Validators gather transactions received from other nodes and execute any associated smart contracts to form new blocks, then participate in a Byzantine Fault Tolerant \(BFT\) consensus protocol to advance the state of the network. Since BFT protocols can scale only to a few hundred participants, and can tolerate at most a third of the participants acting maliciously, a Proof of Stake mechanism admits only a limited set of nodes to this role.
-- **Full Nodes:** Most machines running the Celo Blockchain software are either not configured to be, or not elected as, validators. Celo nodes do not do "mining" as in Proof of Work networks. Their primary role is to serve requests from light clients and forward their transactions, for which they receive the fees associated with those transactions. These payments create a ‘permissionless onramp’ for individuals in the community to earn currency. Full nodes maintain at least partial history of the blockchain by transferring new blocks between themselves, and can join or leave the network at any time.
-- **Light Clients:** Applications including the Celo Wallet will also run on each user's device an instance of the Celo Blockchain software operating as a ‘light client’. Light clients connect to full nodes to make requests for account and transaction data and to sign and submit new transactions, but they do not receive or retain the full state of the blockchain.
-
-The Celo Wallet application is a fully unmanaged wallet that allows users to self custody their funds using their own keys and accounts. All critical features such as sending transactions and checking balances can be done in a trustless manner using the peer-to-peer light client protocol. However, the wallet does use a few centralized cloud services to improve the user experience where possible, e.g.:
-
-- **Google Play Services:** to pre-load invitations in the app
-- **Celo Wallet Notification Service:** sends device push notifications when a user receives a payment or requests for payment
-- **Celo Wallet Blockchain API:** provides a GraphQL API to query transactions on the blockchain on a per-account basis, used to implement a users' activity feed.
-
-When an end user downloads the Celo Wallet from the Google Play Store, users are trusting both Celo and Google to deliver a correct binary, and most users would feel that relying on these centralized services to provide this additional functionality is worthwhile.
-
-## The Celo Protocol
-
-The Celo Blockchain and Celo Core Contracts together comprise the **Celo Protocol**. This term describes both what services the decentralized Celo network provide to applications and the way in which nodes in the network cooperate to achieve this. This section introduces some of these services.
-
-### Consensus and Proof of Stake
-
-Celo is a Proof of Stake blockchain. In comparison to Proof of Work systems like Bitcoin and Ethereum, this eliminates the negative environmental impact and means that users can make transactions that are cheaper, faster, and whose outcome cannot be changed once complete.
-
-The Celo Blockchain implements a Byzantine Fault Tolerant \(BFT\) consensus algorithm in which a well-defined set of validator nodes broadcast signed messages between themselves in a sequence of steps to reach agreement even when up to a third of the total nodes are offline, faulty or malicious. When a quorum of validators have reached agreement, that decision is final.
-
-Celo uses a Proof of Stake mechanism for selecting the validator set for a fixed period termed an epoch. Anyone can earn rewards by bonding Celo Gold and by participating in validator elections and governance proposals. Initially, the number of validators will be capped to one hundred nodes elected by Celo Gold holders. Validators earn additional fixed rewards in Celo Dollars to cover their costs plus margin.
-
-{% hint style="success" %}
-**Roadmap**: Celo is pioneering a [highly scalable, permissionless BFT consensus algorithm](https://medium.com/celohq/bftree-scaling-hotstuff-to-millions-of-validators-7d6930ee046a) that in the long term will result in substantial changes to the proof of stake mechanism described here.
+{% hint style="info" %}
+ We assume you already have Node.js and NPM installed on your computer.
 {% endhint %}
 
-### On-Chain Governance
+### Learning Objectives
 
-Celo uses an on-chain governance mechanism to manage and upgrade aspects of the protocol that reside in the Celo Core Contracts, and for a number of parameters used by the Celo Blockchain. This includes operations like upgrading smart contracts, adding new stable currencies, modifying the reserve target asset allocation, and changing how validator elections are decided.
+At the end of this guide, you will be able to:
 
-The Governance contract is set as “owner” for all of the Celo Core Contracts. This allows the protocol to carry out agreed governance proposals by executing code in the context of the Governance contract. Proposals are selected for consideration and voted on by Celo Gold holders using a weighted vote based on the same Locked Gold commitment used to vote to elect validators.
+* Connect to the Celo test network, called Alfajores
+* Get test cGold and cDollars from the faucet
+* Read account and contract information from the test network
+* Send transactions to the network
 
-### Ultralight Synchronization
+### Repo
 
-Celo provides extremely fast, secure synchronization to enable light clients to begin to track the current state of the Celo blockchain ledger almost immediately. This means that even wallet users with high latency, low bandwidth, or high cost data tariffs can use Celo.
+To start, clone this GitHub repo. This is a Node.js application.
 
-In Ethereum, verifying whether data received from an untrusted full node really does represent the current state of a blockchain requires fetching every block header ever produced to confirm they form a cryptographically secure chain. A consequence of Celo using a BFT consensus algorithm is that we can do that verification by building a chain only of changes in the validator set, not each individual block.
+We will be using the Celo ContractKit SDK to interact with the Celo test network. Let's install it.
 
-{% hint style="success" %}
-**Roadmap**: Synchronization performance will be further improved with BLS signature aggregation and succinct zero-knowledge proofs, via zk-SNARKs.
+```javascript
+npm install @celo/contractkit
+```
+
+We will be writing our Node.js app in the `helloCello.js` file. 
+
+### Importing ContractKit
+
+Importing the contract kit into our script is as easy as
+
+{% code title="helloCello.js" %}
+```javascript
+const Kit = require('@celo/contractkit')
+```
+{% endcode %}
+
+Now we can use the Kit to connect to the network.
+
+{% code title="helloCello.js" %}
+```javascript
+const kit = Kit.newKit('https://alfajores-forno.celo-testnet.org')
+```
+{% endcode %}
+
+{% hint style="info" %}
+At any point in the file you can `console.log()` variables to print their output when you run the script.
 {% endhint %}
 
-### Incentives for Operating Full Nodes
+### Reading Alfajores
 
-Ethereum, there are few incentives to run a full node that is not mining. Few nodes serve light clients, and this results in a poor experience for mobile wallets.
+ContractKit contains a `contracts` property that we can use to access certain information about deployed Celo contracts.
 
-Celo introduces a scheme that incentivizes users to operate regular nodes. Light clients pay transaction fees to full nodes. Clients include in every transaction the address of a node which, when the transaction is processed, receives the fee. While a full node provides other services for which they receive no specific fee, we expect that failing to service these requests will cause clients to seek other full nodes that do, who will then receive fees when they next make a transaction.
+The Celo blockchain has two native assets, Celo Gold \(cGold\) and the Celo Dollar \(cDollar\). Both of these assets implement the [ERC20 token standard](https://eips.ethereum.org/EIPS/eip-20) from Ethereum.
 
-Since light clients need not trust full nodes, as they can verify their work, this also provides the 'permissionless on-ramp' for users to earn cryptocurrency without already holding it that is missing in other Proof of Stake networks.
+Let's read some token balances from the blockchain. The cGold asset is managed by the Celo Gold smart contract. We can access the gold contract with the SDK with `kit.contracts.getGoldToken()`. This function returns a promise, so we have to wait for it to resolve before we can interact with the gold token contract. If you are unfamiliar with Promises in Javascript, [check out this documentation.](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) Promises are a frequent tool in blockchain development.
 
-### Stable Cryptocurrencies
+```javascript
+kit.contracts.getGoldToken().then(goldtoken => {
+    console.log(goldtoken)
+})
+```
 
-Celo enables a family of ERC-20 assets whose values are managed using a stability mechanism. These assets are backed by a reserve of crypto-assets held by the Celo Foundation. The first stablecoin is the Celo Dollar. This is present in the Alfajores testnet, but without a reserve holding any real value backing it.
+Adding this code to `helloCello.js` and running it will print the Gold Token Wrapper provided by ContractKit.
 
-{% hint style="success" %}
-**Roadmap**: Celo envisages a number of stable currencies pegged to different fiat currencies. The Celo Dollar will be pegged to the US Dollar on the future Celo production network.
-{% endhint %}
+We can get the cGold balance of an account using the gold token wrapper with `goldtoken.balanceOf(address)`.  Let's check the balance of this address `'0xD86518b29BB52a5DAC5991eACf09481CE4B0710d'`
 
-Celo's stability mechanism can be seen as the decentralized version of the one-to-one issuance and redemption mechanisms of most fiat-backed stablecoins. Users create new Celo Dollar by sending 1 US Dollar worth of Celo Gold to the reserve, or burn a Celo Dollar by redeeming them for 1 US Dollar worth of Celo Gold.
+```javascript
+let anAddress = '0xD86518b29BB52a5DAC5991eACf09481CE4B0710d'
 
-This scheme relies on a series of Oracles, external to the network, reporting the value of the Celo Gold to US Dollar market rate. To minimize depletion of the reserve when these reported values are inaccurate or out-of-date, Celo uses a constant-product-market-maker model, inspired by the [Uniswap](https://uniswap.io/) system. As arbitrage occurs, the on-chain price dynamically adjusts until the offered rate meets the external rate.
+kit.contracts.getGoldToken().then(goldtoken => { 
+    goldtoken.balanceOf(anAddress).then(balance => {
+        console.log(balance.toString())
+    })
+})
+```
 
-Celo maintains the size of its reserve through several sources, including a stability fee levied on Celo Dollar balances and a transfer from epoch rewards.
+The `balanceOf(address)` function also returns a Promise, so we wait for the promise to resolve then we print the result. 
 
-### Lightweight Identity
+You may notice that we convert the balance to a string before we print it. This is because the `balanceOf()` function returns a [BigNumber](https://github.com/MikeMcl/bignumber.js/). Javascript does not have floating point numbers, so it is common to convert integers to large numbers before doing arithmetic. So 1 cGold = 10\*\*18 base units of cGold. The `balanceOf()` function returns the account balance in these base units. Converting the BigNumber to a string converts the BigNumber object into a more legible string.
 
-Celo offers a lightweight identity layer that allows users of applications including Celo Wallet to identify and securely transact with other users via their contacts' phone numbers. Celo Wallet enables payments directly to users listed in their device's contacts list.
+Reading other account balances is interesting, but how can we send value to each other on the test net?
 
-The Attestations contract allows a user to request attestations to their phone number for a small fee. A secure decentralized source of randomness is used to pick a number of validators that will produce and send via SMS signed secret messages that act as attestations of ownership of the phone number. The user then submits these back to the Attestations contract which verifies them and installs a mapping for the phone number to the user's account.
+We need to do a few things:
 
-### Richer Transactions
+1. Create an account \(create a private key\)
+2. Fund it with test cGold and cDollars
+3. Sign and send transactions to the network
 
-Celo provides a number of enhancements to regular transactions as familiar to Ethereum developers.
+### Accounts
 
-Celo Gold has a duality as both the native currency and is also an ERC-20 token, simplifying the work of application developers.
+We are accessing the Celo network via a remote node via HTTP requests at `'https://alfajores-forno.celo-testnet.org'`. 
 
-In Celo, transaction fees can be paid in stable cryptocurrencies. A user sending Celo Dollars will be able to pay their transaction fee out of their Celo Dollar balance, so they do not need to hold a separate balance of Celo Gold in order to make transactions. The protocol maintains a list of currencies which can be used to pay for transaction fees. These smart contracts implement an extension of the ERC-20 interface, with additional functions that allow the protocol to debit and credit transaction fees.
+Don't worry about what this means right now, just understand that it is easier to get started using Celo by accessing remote nodes, rather than running them locally on your machine. You can [read more about the details of the Celo network here.](overview.md#topology-of-a-celo-network)
 
-The Escrow contract allows users to send payments to other users who can be identified by a phone number but don’t yet have an account. These payments are stored in this contract itself and can be either withdrawn by the intended recipient after creating an account and attesting their identity, or reclaimed by the sender.
+Because we are accessing the network remotely, we need to generate an account to sign transactions and fund that account with test cGold.
 
-Transfers between two accounts with associated identities support end-to-end encrypted comments. A comment encrypted to the identity's public key is passed when making the transfer, and included in an event that can be located on the blockchain ledger.
+There is a short script in `getAccount.js` to either get a Celo account from a mnemonic in the `.secret` file, or create a random account if the file is empty. In the script, we use`ethers.js` to create a new account. [Ethers.js](https://docs.ethers.io/ethers.js/html/index.html) is a popular javascript library for handling Ethereum related functionality. Celo is a cousin of Ethereum, so this library will work well for generating new Celo accounts.
+
+We can now use this `wallet` to get account information \(ie the private key and account address\) and to send transactions from `wallet.account`. We can read the account balance:
+
+{% tabs %}
+{% tab title="helloCello.js" %}
+```javascript
+// add the following line to the top of your helloCelo.js
+const getAccount = require('./getAccount').getAccount()
+
+getAccount().then(wallet => {
+    kit.contracts.getGoldToken().then(goldtoken => { 
+        goldtoken.balanceOf(wallet.address).then(balance => {
+            console.log(wallet.address)
+            console.log(balance.toString())
+        })
+    })    
+})
+```
+{% endtab %}
+{% endtabs %}
+
+This will print `0`, as we have not funded the associated account yet.
+
+### Using the faucet
+
+We can get free cGold and cDollars on the test network for development via [the Celo Alfajores faucet](https://celo.org/build/faucet).
+
+Copy your randomly generated account address from the console output mentioned above, and paste it into the faucet. 
+
+Once your account has been funded, run `$ node helloCelo.js` again to see your update balance.
+
+### Sending Value
+
+We have an account with cGold in it, now how do we send it to another account. Remember the Gold Token wrapper we used to read account balances earlier? We can use the same wrapper to send tokens, you just need to add the private key associated with your account to ContractKit \(see line 10\). 
+
+The Gold Token wrapper has a method called `transfer(address, amount)` that allows you to send value to the specified address \(line 14\). 
+
+You need to `send()` the transaction to the network after you construct it. This method returns a transaction object. We are will wait for the transaction receipt \(which will be returned when the transaction has been included in the blockchain\_ and print it when we get it. This receipt contains information about the transaction.
+
+After we read the receipt, we check the balance of our account again, using the `balanceOf()` function. The logs print our updated balance!
+
+You may notice that the account balance is a bit smaller than the amount of tokens that we sent. This is because you have to pay for every update to the network.
+
+{% code title="helloCelo.js" %}
+```javascript
+const Kit = require('@celo/contractkit')
+const getAccount = require('./getAccount').getAccount
+
+const kit = Kit.newKit('https://alfajores-forno.celo-testnet.org')
+
+let anAddress = '0xD86518b29BB52a5DAC5991eACf09481CE4B0710d'
+
+getAccount().then(wallet => {
+    // add your private key to ContractKit
+    kit.addAccount(wallet.privateKey)
+    
+    // get the Gold Token wrapper
+    kit.contracts.getGoldToken().then(goldtoken => { 
+        goldtoken.transfer(anAddress, 100000).send({from: wallet.address}).then(tx => {
+            return tx.waitReceipt()
+        }).then(receipt => {
+            console.log(receipt)
+            return goldtoken.balanceOf(wallet.address)
+        }).then(balance => {
+            console.log(balance.toString())
+        })
+    })    
+})
+```
+{% endcode %}
+
+### Wrapping Up
+
+Congratulations! You have accomplished a lot in this short introduction to developing on Celo. 
+
+We covered:
+
+* Installing and setting up ContractKit 
+* Connecting to the Celo Alfajores network
+* Getting the cGold contract wrapper
+* Reading account balances using the cGold wrapper
+* Generating a new account in Celo
+* Funding an account using the Celo Alfajores Faucet
+* Sending cGold
+
+
+

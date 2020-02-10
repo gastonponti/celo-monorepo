@@ -10,7 +10,7 @@ While other Validator Groups will exist on the Celo Networks, the fastest way to
 
 Because of the importance of Validator security and availability, Validators are expected to run one or more additional "proxy" nodes. In this setup, the proxy node connects with the rest of the network, and the machine running the Validator communicates only with the proxy, ideally via a private network.
 
-Additionally, Validators are expected to run an [Attestation Service](https://github.com/celo-org/celo-monorepo/tree/master/packages/attestation-service) as part of the [lightweight identity protocol](../celo-codebase/protocol/identity), to provide attestations that allow users to map their phone number to a Celo address.
+Additionally, Validators are expected to run an [Attestation Service](https://github.com/celo-org/celo-monorepo/tree/master/packages/attestation-service) as part of the [lightweight identity protocol](../../celo-codebase/protocol/identity/), to provide attestations that allow users to map their phone number to a Celo address.
 
 You can find more details about Celo mission and why to become a Validator [in our Medium article](https://medium.com/celohq/calling-all-chefs-become-a-celo-validator-c75d1c2909aa).
 
@@ -24,16 +24,16 @@ Participation in The Great Celo Stake Off is subject to these [Terms and Conditi
 
 The recommended Celo Validator setup involves continually running three nodes on separate hardware:
 
-- 1 **Validator node**: should be deployed to single-tenant hardware in a secure, high availability data center
-- 1 **Validator Proxy node**: can be a VM or container in a multi-tenant environment (e.g. a public cloud), but requires high availability
-- 1 **Attestation node**: can be a VM or container in a multi-tenant environment (e.g. a public cloud), and has moderate availability requirements
+* 1 **Validator node**: should be deployed to single-tenant hardware in a secure, high availability data center
+* 1 **Validator Proxy node**: can be a VM or container in a multi-tenant environment \(e.g. a public cloud\), but requires high availability
+* 1 **Attestation node**: can be a VM or container in a multi-tenant environment \(e.g. a public cloud\), and has moderate availability requirements
 
 Celo is a Proof of Stake network, which has different hardware requirements than a Proof of Work network. Proof of Stake consensus is less CPU intensive, but is more sensitive to network connectivity and latency. Below is a list of standard requirements for running Validator and Proxy nodes on the Celo Network:
 
-- Memory: 8 GB RAM
-- CPU: Quad core 3GHz (64-bit)
-- Disk: 256 GB of SSD storage, plus a secondary HDD desirable
-- Network: At least 1 GB input/output Ethernet with a fiber Internet connection, ideally redundant connections and HA switches
+* Memory: 8 GB RAM
+* CPU: Quad core 3GHz \(64-bit\)
+* Disk: 256 GB of SSD storage, plus a secondary HDD desirable
+* Network: At least 1 GB input/output Ethernet with a fiber Internet connection, ideally redundant connections and HA switches
 
 Attestation Service nodes consume less resources and can run on machines with less memory and compute.
 
@@ -55,24 +55,22 @@ On the Attestations machine, port 80 should accept TCP connections from all IP a
 
 #### On each machine
 
-- **You have Docker installed.**
+* **You have Docker installed.**
 
-  If you don’t have it already, follow the instructions here: [Get Started with Docker](https://www.docker.com/get-started). It will involve creating or signing in with a Docker account, downloading a desktop app, and then launching the app to be able to use the Docker CLI. If you are running on a Linux server, follow the instructions for your distro [here](https://docs.docker.com/install/#server). You may be required to run Docker with `sudo` depending on your installation environment.
-  You can check you have Docker installed and running if the command `docker info` works properly.
+  If you don’t have it already, follow the instructions here: [Get Started with Docker](https://www.docker.com/get-started). It will involve creating or signing in with a Docker account, downloading a desktop app, and then launching the app to be able to use the Docker CLI. If you are running on a Linux server, follow the instructions for your distro [here](https://docs.docker.com/install/#server). You may be required to run Docker with `sudo` depending on your installation environment. You can check you have Docker installed and running if the command `docker info` works properly.
 
 #### On your local machine
 
-- **You have celocli installed.**
+* **You have celocli installed.**
 
-  See [Command Line Interface \(CLI\) ](../command-line-interface/introduction.md)for instructions on how to get set up.
+  See [Command Line Interface \(CLI\) ](../../command-line-interface/introduction.md)for instructions on how to get set up.
 
-- **You are using the latest Node 10.x LTS**
+* **You are using the latest Node 10.x LTS**
 
   Some users have reported issues using the most recent version of node. Use the LTS for greater reliability.
 
 {% hint style="info" %}
-A note about conventions:
-The code you'll see on this page is bash commands and their output.
+A note about conventions: The code you'll see on this page is bash commands and their output.
 
 When you see text in angle brackets &lt;&gt;, replace them and the text inside with your own value of what it refers to. Don't include the &lt;&gt; in the command.
 {% endhint %}
@@ -87,47 +85,47 @@ Private keys are the central primitive of any cryptographic system and need to b
 
 Celo nodes store private keys encrypted on disk with a password, and need to be "unlocked" before use. Private keys can be unlocked in two ways:
 
-1.  By running the `celocli account:unlock` command. Note that the node must have the "personal" RPC API enabled in order for this command to work.
-2.  By setting the `--unlock` flag when starting the node.
+1. By running the `celocli account:unlock` command. Note that the node must have the "personal" RPC API enabled in order for this command to work.
+2. By setting the `--unlock` flag when starting the node.
 
 It is important to note that when a key is unlocked you need to be particularly careful about enabling access to the node's RPC APIs.
 
 #### Account and Signer keys
 
-Running a Celo Validator node requires the management of several different keys, each with different privileges. Keys that need to be accessed frequently (e.g. for signing blocks) are at greater risk of being compromised, and thus have more limited permissions, while keys that need to be accessed infrequently (e.g. for locking Celo Gold) are less onerous to store securely, and thus have more expansive permissions. Below is a summary of the various keys that are used in the Celo network, and a description of their permissions.
+Running a Celo Validator node requires the management of several different keys, each with different privileges. Keys that need to be accessed frequently \(e.g. for signing blocks\) are at greater risk of being compromised, and thus have more limited permissions, while keys that need to be accessed infrequently \(e.g. for locking Celo Gold\) are less onerous to store securely, and thus have more expansive permissions. Below is a summary of the various keys that are used in the Celo network, and a description of their permissions.
 
-| Name of the key        | Purpose                                                                                                                                                                                                                                                               |
-| ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Account key            | This is the key with the highest level of permissions, and is thus the most sensitive. It can be used to lock and unlock Celo Gold, and authorize vote, validator, and attestation keys. Note that the account key also has all of the permissions of the other keys. |
-| Validator signer key   | This is the key that has permission to register and manage a Validator or Validator Group, and participate in BFT consensus.                                                                                                                                          |
-| Vote signer key        | This key can be used to vote in Validator elections and on-chain governance.                                                                                                                                                                                          |
-| Attestation signer key | This key is used to sign attestations in Celo's lightweight identity protocol.                                                                                                                                                                                        |
+| Name of the key | Purpose |
+| :--- | :--- |
+| Account key | This is the key with the highest level of permissions, and is thus the most sensitive. It can be used to lock and unlock Celo Gold, and authorize vote, validator, and attestation keys. Note that the account key also has all of the permissions of the other keys. |
+| Validator signer key | This is the key that has permission to register and manage a Validator or Validator Group, and participate in BFT consensus. |
+| Vote signer key | This key can be used to vote in Validator elections and on-chain governance. |
+| Attestation signer key | This key is used to sign attestations in Celo's lightweight identity protocol. |
 
 Note that account and signer keys must be unique and may not be reused.
 
 ### Environment variables
 
-| Variable                             | Explanation                                                                                                                          |
-| ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------ |
-| CELO_IMAGE                           | The Docker image used for the Validator and Proxy containers                                                                         |
-| NETWORK_ID                           | The Celo Baklava network chain ID                                                                                                    |
-| CELO_VALIDATOR_GROUP_ADDRESS         | The account address for the Validator Group                                                                                          |
-| CELO_VALIDATOR_ADDRESS               | The account address for the Validator                                                                                                |
-| CELO_VALIDATOR_SIGNER_ADDRESS        | The address of the validator signer authorized by the validator account                                                              |
-| CELO_VALIDATOR_SIGNER_PUBLIC_KEY     | The ECDSA public key associated with the validator signer address                                                                    |
-| CELO_VALIDATOR_SIGNER_SIGNATURE      | The proof-of-possession of the validator signer key                                                                                  |
-| CELO_VALIDATOR_SIGNER_BLS_PUBLIC_KEY | The BLS public key for the Validator instance                                                                                        |
-| CELO_VALIDATOR_SIGNER_BLS_SIGNATURE  | A proof-of-possession of the BLS public key                                                                                          |
-| PROXY_ENODE                          | The enode address for the Validator proxy                                                                                            |
-| PROXY_INTERNAL_IP                    | (Optional) The internal IP address over which your Validator can communicate with your Proxy                                         |
-| PROXY_EXTERNAL_IP                    | The external IP address of the Proxy. May be used by the Validator to communicate with the Proxy if PROXY_INTERNAL_IP is unspecified |
-| ATTESTATION_SIGNER_ADDRESS           | The address of the attestation signer authorized by the validator account                                                            |
-| ATTESTATION_SIGNER_SIGNATURE         | The proof-of-possession of the attestation signer key                                                                                |
-| ATTESTATION_SERVICE_URL              | The URL to access the deployed Attestation Service                                                                                   |
-| METADATA_URL                         | The URL to access the metadata file for your Attestation Service                                                                     |
-| DATABASE_URL                         | The URL under which your database is accessible, currently supported are `postgres://`, `mysql://` and `sqlite://`                   |
-| APP_SIGNATURE                        | The hash with which clients can auto-read SMS messages on android                                                                    |
-| SMS_PROVIDERS                        | A comma-separated list of providers you want to configure, we currently support `nexmo` & `twilio`                                   |
+| Variable | Explanation |
+| :--- | :--- |
+| CELO\_IMAGE | The Docker image used for the Validator and Proxy containers |
+| NETWORK\_ID | The Celo Baklava network chain ID |
+| CELO\_VALIDATOR\_GROUP\_ADDRESS | The account address for the Validator Group |
+| CELO\_VALIDATOR\_ADDRESS | The account address for the Validator |
+| CELO\_VALIDATOR\_SIGNER\_ADDRESS | The address of the validator signer authorized by the validator account |
+| CELO\_VALIDATOR\_SIGNER\_PUBLIC\_KEY | The ECDSA public key associated with the validator signer address |
+| CELO\_VALIDATOR\_SIGNER\_SIGNATURE | The proof-of-possession of the validator signer key |
+| CELO\_VALIDATOR\_SIGNER\_BLS\_PUBLIC\_KEY | The BLS public key for the Validator instance |
+| CELO\_VALIDATOR\_SIGNER\_BLS\_SIGNATURE | A proof-of-possession of the BLS public key |
+| PROXY\_ENODE | The enode address for the Validator proxy |
+| PROXY\_INTERNAL\_IP | \(Optional\) The internal IP address over which your Validator can communicate with your Proxy |
+| PROXY\_EXTERNAL\_IP | The external IP address of the Proxy. May be used by the Validator to communicate with the Proxy if PROXY\_INTERNAL\_IP is unspecified |
+| ATTESTATION\_SIGNER\_ADDRESS | The address of the attestation signer authorized by the validator account |
+| ATTESTATION\_SIGNER\_SIGNATURE | The proof-of-possession of the attestation signer key |
+| ATTESTATION\_SERVICE\_URL | The URL to access the deployed Attestation Service |
+| METADATA\_URL | The URL to access the metadata file for your Attestation Service |
+| DATABASE\_URL | The URL under which your database is accessible, currently supported are `postgres://`, `mysql://` and `sqlite://` |
+| APP\_SIGNATURE | The hash with which clients can auto-read SMS messages on android |
+| SMS\_PROVIDERS | A comma-separated list of providers you want to configure, we currently support `nexmo` & `twilio` |
 
 First we are going to setup the main environment variables related with the `Baklava` network. Run:
 
@@ -149,8 +147,7 @@ docker pull $CELO_IMAGE
 First, you'll need to generate account keys for your Validator and Validator Group.
 
 {% hint style="danger" %}
-These keys will control your locked Celo Gold, and thus should be handled with care.
-Store and back these keys up in a secure manner, as there will be no way to recover if them if lost or stolen.
+These keys will control your locked Celo Gold, and thus should be handled with care. Store and back these keys up in a secure manner, as there will be no way to recover if them if lost or stolen.
 {% endhint %}
 
 ```bash
@@ -161,8 +158,7 @@ docker run -v $PWD:/root/.celo --rm -it $CELO_IMAGE account new
 docker run -v $PWD:/root/.celo --rm -it $CELO_IMAGE account new
 ```
 
-This will create a new keystore in the current directory with two new accounts.
-Copy the addresses from the terminal and set the following environment variables:
+This will create a new keystore in the current directory with two new accounts. Copy the addresses from the terminal and set the following environment variables:
 
 ```bash
 # On your local machine
@@ -193,11 +189,11 @@ docker run --name celo-accounts -it --restart always -p 127.0.0.1:8545:8545 -v $
 
 ### Obtain and lock up some Celo Gold for staking
 
-To participate in The Great Celo Stake Off (aka TGCSO) and get fauceted it's necessary to register online via an [online form](https://docs.google.com/forms/d/e/1FAIpQLSfbn5hTJ4UIWpN92-o2qMTUB0UnrFsL0fm97XqGe4VhhN_r5A/viewform). Once the C-Labs team receives your registration, they'll send you instructions to get fauceted. Follow those instructions now. Then, while you wait, let's deploy the remaining components:
+To participate in The Great Celo Stake Off \(aka TGCSO\) and get fauceted it's necessary to register online via an [online form](https://docs.google.com/forms/d/e/1FAIpQLSfbn5hTJ4UIWpN92-o2qMTUB0UnrFsL0fm97XqGe4VhhN_r5A/viewform). Once the C-Labs team receives your registration, they'll send you instructions to get fauceted. Follow those instructions now. Then, while you wait, let's deploy the remaining components:
 
 ### Deploy a Validator
 
-To actually register as a validator, we'll need to generate a validating signer key. On your Validator machine (which should not be accessible from the public internet), follow very similar steps:
+To actually register as a validator, we'll need to generate a validating signer key. On your Validator machine \(which should not be accessible from the public internet\), follow very similar steps:
 
 ```bash
 # On the validator machine
@@ -228,7 +224,7 @@ export CELO_VALIDATOR_SIGNER_SIGNATURE=<YOUR-VALIDATOR-SIGNER-SIGNATURE>
 export CELO_VALIDATOR_SIGNER_PUBLIC_KEY=<YOUR-VALIDATOR-SIGNER-PUBLIC-KEY>
 ```
 
-Validators on the Celo network use BLS aggregated signatures to create blocks in addition to the Validator signer (ECDSA) key. While an independent BLS key can be specified, the simplest thing to do is to derive the BLS key from the Validator signer key. When we register our Validator, we'll need to prove possession of the BLS key as well, which can be done by running the following command:
+Validators on the Celo network use BLS aggregated signatures to create blocks in addition to the Validator signer \(ECDSA\) key. While an independent BLS key can be specified, the simplest thing to do is to derive the BLS key from the Validator signer key. When we register our Validator, we'll need to prove possession of the BLS key as well, which can be done by running the following command:
 
 ```bash
 # On the validator machine
@@ -282,8 +278,7 @@ Once the proxy is running, we will need to retrieve its enode and IP address so 
 docker exec celo-proxy geth --exec "admin.nodeInfo['enode'].split('//')[1].split('@')[0]" attach | tr -d '"'
 ```
 
-Now we need to set the proxy enode and proxy IP address in environment variables on the validator machine.
-If you don't have an internal IP address over which the Validator and Proxy can communicate, feel free to set the internal IP address to the external IP address.
+Now we need to set the proxy enode and proxy IP address in environment variables on the validator machine. If you don't have an internal IP address over which the Validator and Proxy can communicate, feel free to set the internal IP address to the external IP address.
 
 If you don't know your Proxy's external IP address, you can get it by running the following command:
 
@@ -333,11 +328,11 @@ The `mine` flag does not mean the node starts mining blocks, but rather starts t
 
 The `networkid` parameter value of `200110` indicates we are connecting to the Baklava network, Stake Off Phase 1.
 
-Note that if you are running the validator and the proxy on the same machine, then you should set the validator's listening port to something other than `30303`. E.g. you could use the flag `--port 30313` and set the docker port forwarding rules accordingly (e.g. use the flags `-p 30313:30313` and `-p 30313:30313/udp`).
+Note that if you are running the validator and the proxy on the same machine, then you should set the validator's listening port to something other than `30303`. E.g. you could use the flag `--port 30313` and set the docker port forwarding rules accordingly \(e.g. use the flags `-p 30313:30313` and `-p 30313:30313/udp`\).
 
 ### Register the Accounts
 
-You've now done all the infrastructure setup to get a validator and proxy running. The C-Labs team will review your submission to receive funds and send you 12,000 testnet Celo Gold to each of your Validator and Validator Group account addresses. These funds have no real world value but will allow you to submit transactions to the network via [`celocli`](../command-line-interface/introduction.md) and put up a stake to register as a validator and validator group.
+You've now done all the infrastructure setup to get a validator and proxy running. The C-Labs team will review your submission to receive funds and send you 12,000 testnet Celo Gold to each of your Validator and Validator Group account addresses. These funds have no real world value but will allow you to submit transactions to the network via [`celocli`](../../command-line-interface/introduction.md) and put up a stake to register as a validator and validator group.
 
 You can view your Celo Gold balances by running the following commands:
 
@@ -379,7 +374,7 @@ celocli lockedgold:lock --from $CELO_VALIDATOR_GROUP_ADDRESS --value 10000000000
 celocli lockedgold:lock --from $CELO_VALIDATOR_ADDRESS --value 10000000000000000000000
 ```
 
-This amount (10,000 Celo Gold) represents the minimum amount needed to be locked in order to register a Validator and Validator group. Since your balance is in fact higher than this, you may wish to lock more with these accounts. Note that you will want to be sure to leave enough Gold unlocked to be able to continue to pay transaction fees for future transactions (such as those issued by running some CLI commands).
+This amount \(10,000 Celo Gold\) represents the minimum amount needed to be locked in order to register a Validator and Validator group. Since your balance is in fact higher than this, you may wish to lock more with these accounts. Note that you will want to be sure to leave enough Gold unlocked to be able to continue to pay transaction fees for future transactions \(such as those issued by running some CLI commands\).
 
 Check that your Celo Gold was successfully locked with the following commands:
 
@@ -391,7 +386,7 @@ celocli lockedgold:show $CELO_VALIDATOR_ADDRESS
 
 ### Run for election
 
-In order to be elected as a Validator, you will first need to register your group and Validator. Note that when registering a Validator Group, you need to specify a [commission](../celo-codebase/protocol/proof-of-stake/validator-groups.md#group-share), which is the fraction of epoch rewards paid to the group by its members.
+In order to be elected as a Validator, you will first need to register your group and Validator. Note that when registering a Validator Group, you need to specify a [commission](../../celo-codebase/protocol/proof-of-stake/validator-groups.md#group-share), which is the fraction of epoch rewards paid to the group by its members.
 
 We don't want to use our account key for validating, so first let's authorize the validator signing key:
 
@@ -522,7 +517,7 @@ celocli validator:show $CELO_VALIDATOR_ADDRESS
 
 ### Running the Attestation Service
 
-As part of the [lightweight identity protocol](/celo-codebase/protocol/identity), Validators are expected to run an [Attestation Service](https://github.com/celo-org/celo-monorepo/tree/master/packages/attestation-service) to provide attestations that allow users to map their phone number to an account on Celo. Be sure to allow TCP connections to your Attestations machine on port 80 for all IP addresses.
+As part of the [lightweight identity protocol](https://github.com/critesjosh/celo-monorepo/tree/60af07fdd18b97918eed0a48c30380cfe3194ebf/celo-codebase/protocol/identity/README.md), Validators are expected to run an [Attestation Service](https://github.com/celo-org/celo-monorepo/tree/master/packages/attestation-service) to provide attestations that allow users to map their phone number to an account on Celo. Be sure to allow TCP connections to your Attestations machine on port 80 for all IP addresses.
 
 Just like with the Validator signer, we'll want to authorize a separate Attestation signer. For that let's start our node on the Attestations machine:
 
@@ -581,30 +576,30 @@ Currently the SMS providers supported are [Twilio](https://www.twilio.com/try-tw
 
 Twilio is the most common and popular provider. For that you will need to provision the following variables:
 
-| Variable                     | Explanation                                                     |
-| ---------------------------- | --------------------------------------------------------------- |
-| TWILIO_ACCOUNT_SID           | The Twilio account ID                                           |
-| TWILIO_MESSAGING_SERVICE_SID | The Twilio Message Service ID. Starts by `MG`                   |
-| TWILIO_AUTH_TOKEN            | The API authentication token                                    |
-| TWILIO_BLACKLIST             | A comma-sperated list of country codes you do not want to serve |
+| Variable | Explanation |
+| :--- | :--- |
+| TWILIO\_ACCOUNT\_SID | The Twilio account ID |
+| TWILIO\_MESSAGING\_SERVICE\_SID | The Twilio Message Service ID. Starts by `MG` |
+| TWILIO\_AUTH\_TOKEN | The API authentication token |
+| TWILIO\_BLACKLIST | A comma-sperated list of country codes you do not want to serve |
 
-After you signed up for Twilio at [https://www.twilio.com/try-twilio](https://www.twilio.com/try-twilio), you should see your `ACCOUNT SID` and your `AUTH_TOKEN` in the top right of the console. You'll also want to enter in a credit card to fund the account. For most text messages, the costs will be very low (and on mainnet easily exceeded by the attestation fee paid by the user). Find a more comprehensive price list at [https://www.twilio.com/sms/pricing](https://www.twilio.com/sms/pricing). If there are countries that you do not want to serve, you can specify them with the `TWILIO_BLACKLIST`. In any case, you'll want to adjust your Geo settings to serve phone numbers globally under [https://www.twilio.com/console/sms/settings/geo-permissions](https://www.twilio.com/console/sms/settings/geo-permissions).
+After you signed up for Twilio at [https://www.twilio.com/try-twilio](https://www.twilio.com/try-twilio), you should see your `ACCOUNT SID` and your `AUTH_TOKEN` in the top right of the console. You'll also want to enter in a credit card to fund the account. For most text messages, the costs will be very low \(and on mainnet easily exceeded by the attestation fee paid by the user\). Find a more comprehensive price list at [https://www.twilio.com/sms/pricing](https://www.twilio.com/sms/pricing). If there are countries that you do not want to serve, you can specify them with the `TWILIO_BLACKLIST`. In any case, you'll want to adjust your Geo settings to serve phone numbers globally under [https://www.twilio.com/console/sms/settings/geo-permissions](https://www.twilio.com/console/sms/settings/geo-permissions).
 
 {% hint style="info" %}
-Make sure you can serve requests for numbers in US, Europe, Australia, Mexico, Argentina, the Philippines, and Kenya. 
+Make sure you can serve requests for numbers in US, Europe, Australia, Mexico, Argentina, the Philippines, and Kenya.
 {% endhint %}
 
-To actually be able to send SMS, you need to create a messaging service under [Programmable SMS > SMS](https://www.twilio.com/console/sms/services). The resulting `SID` you want to specify under the `TWILIO_MESSAGING_SERVICE_SID`. Now that you have provisioned your messaging service, you need to buy at least 1 phone number to send SMS from. You can do so under the `Numbers` option of the messaging service page. To maximize the chances of reliable and prompt SMS sending (and thus attestation fee revenue), you can buy numbers in many locales, and Twilio will intelligently select the best number to send each SMS.
+To actually be able to send SMS, you need to create a messaging service under [Programmable SMS &gt; SMS](https://www.twilio.com/console/sms/services). The resulting `SID` you want to specify under the `TWILIO_MESSAGING_SERVICE_SID`. Now that you have provisioned your messaging service, you need to buy at least 1 phone number to send SMS from. You can do so under the `Numbers` option of the messaging service page. To maximize the chances of reliable and prompt SMS sending \(and thus attestation fee revenue\), you can buy numbers in many locales, and Twilio will intelligently select the best number to send each SMS.
 
 **Nexmo**
 
 Here is the list of the enviromnet variables needed to use the Nexmo SMS broker:
 
-| Variable        | Explanation                                                     |
-| --------------- | --------------------------------------------------------------- |
-| NEXMO_KEY       | The API key to the Nexmo API                                    |
-| NEXMO_SECRET    | The API secret to the Nexmo API                                 |
-| NEXMO_BLACKLIST | A comma-sperated list of country codes you do not want to serve |
+| Variable | Explanation |
+| :--- | :--- |
+| NEXMO\_KEY | The API key to the Nexmo API |
+| NEXMO\_SECRET | The API secret to the Nexmo API |
+| NEXMO\_BLACKLIST | A comma-sperated list of country codes you do not want to serve |
 
 ### Database Configuration
 
@@ -632,7 +627,7 @@ export DATABASE_URL="postgres://postgres:<DATABASE_PASSWORD>@localhost:5432/atte
 
 ## Executing the Attestation Service
 
-The following command for running the Attestation Service is using Twilio and uses `--network host` to access a local database (only works on Linux):
+The following command for running the Attestation Service is using Twilio and uses `--network host` to access a local database \(only works on Linux\):
 
 ```bash
 # On the Attestation machine
@@ -641,10 +636,10 @@ docker run --name celo-attestation-service -it --restart always --entrypoint /bi
 
 ## Registering Metadata
 
-We are using [Metadata](../celo-codebase/protocol/identity/metadata) to allow accounts to make certain claims without having to do so on-chain. For us to complete the process, we have to make two claims:
+We are using [Metadata](https://github.com/critesjosh/celo-monorepo/tree/60af07fdd18b97918eed0a48c30380cfe3194ebf/packages/docs/celo-codebase/protocol/identity/metadata/README.md) to allow accounts to make certain claims without having to do so on-chain. For us to complete the process, we have to make two claims:
 
-1.  Under which URL users can request attestations from
-2.  Which accounts belong together for the purpose of the leaderboard
+1. Under which URL users can request attestations from
+2. Which accounts belong together for the purpose of the leaderboard
 
 Run the following commands on your local machine where `$CELO_VALIDATOR_ADDRESS` is unlocked.
 
@@ -700,8 +695,8 @@ celocli account:register-metadata --url <GROUP_METADATA_URL> --from $CELO_VALIDA
 
 Now when you run `celocli account:get-metadata $CELO_VALIDATOR_ADDRESS`, you should see your claim for the group account to be verified. By now, you should have setup your Validator account appropriately. Note that you need to add these claims for any other addresses that are yours to calculate your score for the leaderboard appropriately.
 
-{% hint style="tip" %}
-Congratulations on setting up your validator. If you want to win the TGCSO, it may be helpful to get familiar with the inner workings of the Celo network. Dig into the [protocol documentation](../celo-codebase/protocol) for more information.
+{% hint style="info" %}
+Congratulations on setting up your validator. If you want to win the TGCSO, it may be helpful to get familiar with the inner workings of the Celo network. Dig into the [protocol documentation](../../celo-codebase/protocol/) for more information.
 {% endhint %}
 
 ## Deployment Tips
@@ -736,8 +731,7 @@ screen -r -S celo-validator
 
 ### Stopping containers
 
-You can stop the Docker containers at any time without problem. If you stop your containers that means those containers stop providing service.
-The data dir of the validator and the proxy are Docker volumes mounted in the containers from the `celo-*-dir` you created at the very beginning. So if you don't remove that folder, you can stop or restart the containers without losing any data.
+You can stop the Docker containers at any time without problem. If you stop your containers that means those containers stop providing service. The data dir of the validator and the proxy are Docker volumes mounted in the containers from the `celo-*-dir` you created at the very beginning. So if you don't remove that folder, you can stop or restart the containers without losing any data.
 
 You can stop the `celo-validator` and `celo-proxy` containers running:
 
@@ -745,7 +739,7 @@ You can stop the `celo-validator` and `celo-proxy` containers running:
 docker stop celo-validator celo-proxy
 ```
 
-And you can remove the containers (not the data dir) running:
+And you can remove the containers \(not the data dir\) running:
 
 ```bash
 docker rm -f celo-validator celo-proxy
@@ -764,3 +758,4 @@ Please remove your validator from its group so that at the end of the current ep
 ```bash
 celocli validatorgroup:member --from $CELO_VALIDATOR_GROUP_ADDRESS --remove $CELO_VALIDATOR_ADDRESS
 ```
+

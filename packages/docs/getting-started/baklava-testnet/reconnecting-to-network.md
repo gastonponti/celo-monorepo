@@ -1,4 +1,4 @@
-# How to reconnect to Baklava after a network reset
+# Reconnecting to a Network
 
 If you were running a Validator and Proxy in a previous phase of the `baklava` network, this page contains instructions about how to set up your Validator on the current phase.
 
@@ -158,8 +158,8 @@ echo CELO_ATTESTATION_SIGNER_SIGNATURE=$CELO_ATTESTATION_SIGNER_SIGNATURE
 
 If any of the environment variables are missing, you have two options:
 
-1.  Find the shell where you ran the original instructions and look for the missing environment variables. Then, export them again.
-2.  If you can't find that information, but you have the `CELO_VALIDATOR_ADDRESS`, `CELO_VALIDATOR_GROUP_ADDRESS` and `CELO_VALIDATOR_SIGNER_ADDRESS` variables, the other Celo variables are deterministic and generated using as input those variables. So you can refer to the point of the documentation where the missing variables were created, and create them again.
+1. Find the shell where you ran the original instructions and look for the missing environment variables. Then, export them again.
+2. If you can't find that information, but you have the `CELO_VALIDATOR_ADDRESS`, `CELO_VALIDATOR_GROUP_ADDRESS` and `CELO_VALIDATOR_SIGNER_ADDRESS` variables, the other Celo variables are deterministic and generated using as input those variables. So you can refer to the point of the documentation where the missing variables were created, and create them again.
 
 #### Run the celocli
 
@@ -173,3 +173,4 @@ npm uninstall -g @celo/celocli && npm install -g @celo/celocli
 At this point you should be able to continue the steps described in the [Running a Validator](running-a-validator.md) documentation page, starting at the [Register the Accounts](running-a-validator.md#register-the-accounts) section. Also remember to [register your Metadata](running-a-validator.md#registering-metadata) to be able to serve attestations and claim all your funds for the leaderboard.
 
 Note that if you were fauceted in phase 1.0 of The Great Celo Stakeoff, your accounts should have been included in the genesis block for subsequent phases, so you will not need to be fauceted again.
+

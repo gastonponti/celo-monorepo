@@ -17,3 +17,4 @@ We have made a number of substantial changes in service of Celo's product goals,
 {% page-ref page="stability/" %}
 
 {% page-ref page="privacy.md" %}
+
