@@ -1,0 +1,194 @@
+# EscrowWrapper
+
+Contract for handling reserve for stable currencies
+
+## Hierarchy
+
+* [BaseWrapper](../classes/_wrappers_basewrapper_.basewrapper.md)‹Escrow›
+
+  ↳ **EscrowWrapper**
+
+## Index
+
+### Constructors
+
+* [constructor](../classes/_wrappers_escrow_.escrowwrapper.md#constructor)
+
+### Properties
+
+* [escrowedPayments](../classes/_wrappers_escrow_.escrowwrapper.md#escrowedpayments)
+* [getReceivedPaymentIds](../classes/_wrappers_escrow_.escrowwrapper.md#getreceivedpaymentids)
+* [getSentPaymentId](../classes/_wrappers_escrow_.escrowwrapper.md#getsentpaymentid)
+* [receivedPaymentIds](../classes/_wrappers_escrow_.escrowwrapper.md#receivedpaymentids)
+* [revoke](../classes/_wrappers_escrow_.escrowwrapper.md#revoke)
+* [sentPaymentIds](../classes/_wrappers_escrow_.escrowwrapper.md#sentpaymentids)
+* [transfer](../classes/_wrappers_escrow_.escrowwrapper.md#transfer)
+* [withdraw](../classes/_wrappers_escrow_.escrowwrapper.md#withdraw)
+
+### Accessors
+
+* [address](../classes/_wrappers_escrow_.escrowwrapper.md#address)
+
+## Constructors
+
+### constructor
+
++ **new EscrowWrapper**\(`kit`: [ContractKit](../classes/_kit_.contractkit.md), `contract`: Escrow\): [_EscrowWrapper_](../classes/_wrappers_escrow_.escrowwrapper.md)
+
+_Inherited from_ [_BaseWrapper_](../classes/_wrappers_basewrapper_.basewrapper.md)_._[_constructor_](../classes/_wrappers_basewrapper_.basewrapper.md#constructor)
+
+_Defined in_ [_packages/contractkit/src/wrappers/BaseWrapper.ts:14_](https://github.com/celo-org/celo-monorepo/blob/master/packages/contractkit/src/wrappers/BaseWrapper.ts#L14)
+
+**Parameters:**
+
+| Name | Type |
+| :--- | :--- |
+| `kit` | [ContractKit](../classes/_kit_.contractkit.md) |
+| `contract` | Escrow |
+
+**Returns:** [_EscrowWrapper_](../classes/_wrappers_escrow_.escrowwrapper.md)
+
+## Properties
+
+### escrowedPayments
+
+• **escrowedPayments**: _function_ = proxyCall\(this.contract.methods.escrowedPayments\)
+
+_Defined in_ [_packages/contractkit/src/wrappers/Escrow.ts:8_](https://github.com/celo-org/celo-monorepo/blob/master/packages/contractkit/src/wrappers/Escrow.ts#L8)
+
+#### Type declaration:
+
+▸ \(...`args`: InputArgs\): _Promise‹Output›_
+
+**Parameters:**
+
+| Name | Type |
+| :--- | :--- |
+| `...args` | InputArgs |
+
+### getReceivedPaymentIds
+
+• **getReceivedPaymentIds**: _function_ = proxyCall\(this.contract.methods.sentPaymentIds\)
+
+_Defined in_ [_packages/contractkit/src/wrappers/Escrow.ts:14_](https://github.com/celo-org/celo-monorepo/blob/master/packages/contractkit/src/wrappers/Escrow.ts#L14)
+
+#### Type declaration:
+
+▸ \(...`args`: InputArgs\): _Promise‹Output›_
+
+**Parameters:**
+
+| Name | Type |
+| :--- | :--- |
+| `...args` | InputArgs |
+
+### getSentPaymentId
+
+• **getSentPaymentId**: _function_ = proxyCall\(this.contract.methods.sentPaymentIds\)
+
+_Defined in_ [_packages/contractkit/src/wrappers/Escrow.ts:16_](https://github.com/celo-org/celo-monorepo/blob/master/packages/contractkit/src/wrappers/Escrow.ts#L16)
+
+#### Type declaration:
+
+▸ \(...`args`: InputArgs\): _Promise‹Output›_
+
+**Parameters:**
+
+| Name | Type |
+| :--- | :--- |
+| `...args` | InputArgs |
+
+### receivedPaymentIds
+
+• **receivedPaymentIds**: _function_ = proxyCall\(this.contract.methods.receivedPaymentIds\)
+
+_Defined in_ [_packages/contractkit/src/wrappers/Escrow.ts:10_](https://github.com/celo-org/celo-monorepo/blob/master/packages/contractkit/src/wrappers/Escrow.ts#L10)
+
+#### Type declaration:
+
+▸ \(...`args`: InputArgs\): _Promise‹Output›_
+
+**Parameters:**
+
+| Name | Type |
+| :--- | :--- |
+| `...args` | InputArgs |
+
+### revoke
+
+• **revoke**: _function_ = proxySend\(this.kit, this.contract.methods.revoke\)
+
+_Defined in_ [_packages/contractkit/src/wrappers/Escrow.ts:22_](https://github.com/celo-org/celo-monorepo/blob/master/packages/contractkit/src/wrappers/Escrow.ts#L22)
+
+#### Type declaration:
+
+▸ \(...`args`: InputArgs\): [_CeloTransactionObject_](../classes/_wrappers_basewrapper_.celotransactionobject.md)_‹Output›_
+
+**Parameters:**
+
+| Name | Type |
+| :--- | :--- |
+| `...args` | InputArgs |
+
+### sentPaymentIds
+
+• **sentPaymentIds**: _function_ = proxyCall\(this.contract.methods.sentPaymentIds\)
+
+_Defined in_ [_packages/contractkit/src/wrappers/Escrow.ts:12_](https://github.com/celo-org/celo-monorepo/blob/master/packages/contractkit/src/wrappers/Escrow.ts#L12)
+
+#### Type declaration:
+
+▸ \(...`args`: InputArgs\): _Promise‹Output›_
+
+**Parameters:**
+
+| Name | Type |
+| :--- | :--- |
+| `...args` | InputArgs |
+
+### transfer
+
+• **transfer**: _function_ = proxySend\(this.kit, this.contract.methods.transfer\)
+
+_Defined in_ [_packages/contractkit/src/wrappers/Escrow.ts:18_](https://github.com/celo-org/celo-monorepo/blob/master/packages/contractkit/src/wrappers/Escrow.ts#L18)
+
+#### Type declaration:
+
+▸ \(...`args`: InputArgs\): [_CeloTransactionObject_](../classes/_wrappers_basewrapper_.celotransactionobject.md)_‹Output›_
+
+**Parameters:**
+
+| Name | Type |
+| :--- | :--- |
+| `...args` | InputArgs |
+
+### withdraw
+
+• **withdraw**: _function_ = proxySend\(this.kit, this.contract.methods.withdraw\)
+
+_Defined in_ [_packages/contractkit/src/wrappers/Escrow.ts:20_](https://github.com/celo-org/celo-monorepo/blob/master/packages/contractkit/src/wrappers/Escrow.ts#L20)
+
+#### Type declaration:
+
+▸ \(...`args`: InputArgs\): [_CeloTransactionObject_](../classes/_wrappers_basewrapper_.celotransactionobject.md)_‹Output›_
+
+**Parameters:**
+
+| Name | Type |
+| :--- | :--- |
+| `...args` | InputArgs |
+
+## Accessors
+
+### address
+
+• **get address**\(\): _string_
+
+_Inherited from_ [_BaseWrapper_](../classes/_wrappers_basewrapper_.basewrapper.md)_._[_address_](../classes/_wrappers_basewrapper_.basewrapper.md#address)
+
+_Defined in_ [_packages/contractkit/src/wrappers/BaseWrapper.ts:18_](https://github.com/celo-org/celo-monorepo/blob/master/packages/contractkit/src/wrappers/BaseWrapper.ts#L18)
+
+Contract address
+
+**Returns:** _string_
+

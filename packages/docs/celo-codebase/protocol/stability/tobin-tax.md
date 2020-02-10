@@ -4,8 +4,9 @@ If the Celo reserve becomes under-collateralized, a small tax is levied on Celo 
 
 The reserve is considered collateralized if its holding of Celo Gold are greater than or equal to the value \(in Celo Gold\) of the Celo Dollar supply, i.e.:
 
-```
+```text
 ReserveBalance >= CeloDollarSupply * ExchangeRate
 ```
 
 where `ExchangeRate` comes from the [price oracle](oracles.md) in the `SortedOracles` smart contract.
+

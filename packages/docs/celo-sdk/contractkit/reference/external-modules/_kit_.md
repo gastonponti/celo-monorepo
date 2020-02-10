@@ -1,0 +1,52 @@
+# kit
+
+## Index
+
+### Classes
+
+* [ContractKit](../classes/_kit_.contractkit.md)
+
+### Interfaces
+
+* [KitOptions](../interfaces/_kit_.kitoptions.md)
+* [NetworkConfig](../interfaces/_kit_.networkconfig.md)
+
+### Functions
+
+* [newKit](_kit_.md#newkit)
+* [newKitFromWeb3](_kit_.md#newkitfromweb3)
+
+## Functions
+
+### newKit
+
+▸ **newKit**\(`url`: string\): [_ContractKit_](../classes/_kit_.contractkit.md)_‹›_
+
+_Defined in_ [_packages/contractkit/src/kit.ts:28_](https://github.com/celo-org/celo-monorepo/blob/master/packages/contractkit/src/kit.ts#L28)
+
+Creates a new instance of `ContractKit` give a nodeUrl
+
+**Parameters:**
+
+| Name | Type | Description |
+| :--- | :--- | :--- |
+| `url` | string | CeloBlockchain node url |
+
+**Returns:** [_ContractKit_](../classes/_kit_.contractkit.md)_‹›_
+
+### newKitFromWeb3
+
+▸ **newKitFromWeb3**\(`web3`: Web3\): [_ContractKit_](../classes/_kit_.contractkit.md)_‹›_
+
+_Defined in_ [_packages/contractkit/src/kit.ts:36_](https://github.com/celo-org/celo-monorepo/blob/master/packages/contractkit/src/kit.ts#L36)
+
+Creates a new instance of `ContractKit` give a web3 instance
+
+**Parameters:**
+
+| Name | Type | Description |
+| :--- | :--- | :--- |
+| `web3` | Web3 | Web3 instance |
+
+**Returns:** [_ContractKit_](../classes/_kit_.contractkit.md)_‹›_
+
