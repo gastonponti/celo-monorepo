@@ -84,9 +84,19 @@ We can get the cGold balance of an account using the gold token wrapper with `go
 {% tabs %}
 {% tab title="helloCelo.js" %}
 ```javascript
+const Kit = require('@celo/contractkit')
+
+const kit = Kit.newKit('https://alfajores-forno.celo-testnet.org')
+
 let anAddress = '0xD86518b29BB52a5DAC5991eACf09481CE4B0710d'
 
-let balance = await goldtoken.balanceOf(anAddress)
+async function awaitWrapper(){
+    let goldtoken = await kit.contracts.getGoldToken()
+    let balance = await goldtoken.balanceOf(anAddress)
+    console.log(balance.toString())
+}
+
+awaitWrapper()
 ```
 {% endtab %}
 {% endtabs %}
@@ -121,13 +131,16 @@ We can now use this `account` to get account information \(ie the private key an
 // add the following line to the top of your helloCelo.js
 const getAccount = require('./getAccount').getAccount
 
-// add the following in the awaitWrapper()
-let account = await getAccount()
-let goldtoken = await kit.contracts.getGoldToken()
-let balance = await goldtoken.balanceOf(account.address)
+async function awaitWrapper(){
+    let account = await getAccount()
+    let goldtoken = await kit.contracts.getGoldToken()
+    let balance = await goldtoken.balanceOf(account.address)
 
-console.log(account.address)
-console.log(balance.toString())
+    console.log(account.address)
+    console.log(balance.toString())
+}
+
+awaitWrapper()
 ```
 {% endtab %}
 {% endtabs %}
