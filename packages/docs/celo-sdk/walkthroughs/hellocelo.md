@@ -67,14 +67,12 @@ ContractKit contains a `contracts` property that we can use to access certain in
 
 The Celo blockchain has two native assets, Celo Gold \(cGold\) and the Celo Dollar \(cDollar\). Both of these assets implement the [ERC20 token standard](https://eips.ethereum.org/EIPS/eip-20) from Ethereum.
 
-Let's read some token balances from the blockchain. The cGold asset is managed by the Celo Gold smart contract. We can access the gold contract with the SDK with `kit.contracts.getGoldToken()`. This function returns a promise, so we have to wait for it to resolve before we can interact with the gold token contract. If you are unfamiliar with Promises in Javascript, [check out this documentation.](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) Promises are a frequent tool in blockchain development.
+Let's read some token balances from the blockchain. The cGold asset is managed by the Celo Gold smart contract. We can access the gold contract with the SDK with `kit.contracts.getGoldToken()`. This function returns a promise, so we have to wait for it to resolve before we can interact with the gold token contract. If you are unfamiliar with Promises in Javascript, [check out this documentation.](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) Promises are a common tool in blockchain development. In this guide, we use the [async/await syntax for promises](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/await). 
 
 {% tabs %}
 {% tab title="helloCelo.js" %}
 ```javascript
-kit.contracts.getGoldToken().then(goldtoken => {
-    console.log(goldtoken)
-})
+let goldtoken = await kit.contracts.getGoldToken()
 ```
 {% endtab %}
 {% endtabs %}
@@ -88,11 +86,7 @@ We can get the cGold balance of an account using the gold token wrapper with `go
 ```javascript
 let anAddress = '0xD86518b29BB52a5DAC5991eACf09481CE4B0710d'
 
-kit.contracts.getGoldToken().then(goldtoken => { 
-    goldtoken.balanceOf(anAddress).then(balance => {
-        console.log(balance.toString())
-    })
-})
+let balance = await goldtoken.balanceOf(anAddress)
 ```
 {% endtab %}
 {% endtabs %}
@@ -119,7 +113,7 @@ Because we are accessing the network remotely, we need to generate an account to
 
 There is a short script in `getAccount.js` to either get a Celo account from a mnemonic in the `.secret` file, or create a random account if the file is empty. In the script, we use`ethers.js` to create a new account. [Ethers.js](https://docs.ethers.io/ethers.js/html/index.html) is a popular javascript library for handling Ethereum related functionality. Celo is a cousin of Ethereum, so this library will work well for generating new Celo accounts.
 
-We can now use this `wallet` to get account information \(ie the private key and account address\) and to send transactions from `wallet.account`. We can read the account balance:
+We can now use this `account` to get account information \(ie the private key and account address\) and to send transactions from `account.address`. We can read the account balance:
 
 {% tabs %}
 {% tab title="helloCello.js" %}
@@ -127,14 +121,13 @@ We can now use this `wallet` to get account information \(ie the private key and
 // add the following line to the top of your helloCelo.js
 const getAccount = require('./getAccount').getAccount
 
-getAccount().then(wallet => {
-    kit.contracts.getGoldToken().then(goldtoken => { 
-        goldtoken.balanceOf(wallet.address).then(balance => {
-            console.log(wallet.address)
-            console.log(balance.toString())
-        })
-    })    
-})
+// add the following in the awaitWrapper()
+let account = await getAccount()
+let goldtoken = await kit.contracts.getGoldToken()
+let balance = await goldtoken.balanceOf(account.address)
+
+console.log(account.address)
+console.log(balance.toString())
 ```
 {% endtab %}
 {% endtabs %}
@@ -161,7 +154,8 @@ After we read the receipt, we check the balance of our account again, using the 
 
 You may notice that the account balance is a bit smaller than the amount of tokens that we sent. This is because you have to pay for every update to the network.
 
-{% code title="helloCelo.js" %}
+{% tabs %}
+{% tab title="helloCelo.js" %}
 ```javascript
 const Kit = require('@celo/contractkit')
 const getAccount = require('./getAccount').getAccount
@@ -170,24 +164,22 @@ const kit = Kit.newKit('https://alfajores-forno.celo-testnet.org')
 
 let anAddress = '0xD86518b29BB52a5DAC5991eACf09481CE4B0710d'
 
-getAccount().then(wallet => {
-    // add your private key to ContractKit
-    kit.addAccount(wallet.privateKey)
+async function awaitWrapper(){
+    let account = await getAccount()
+    kit.addAccount(account.privateKey)
+    
+    let goldtoken = await kit.contracts.getGoldToken()
+    let tx = await goldtoken.transfer(anAddress, 100000).send({from: account.address})
+    let receipt = await tx.waitReceipt()
+    console.log(receipt)
+    let balance = await goldtoken.balanceOf(account.address)
+    console.log(balance.toString())
+}
 
-    // get the Gold Token wrapper
-    kit.contracts.getGoldToken().then(goldtoken => { 
-        goldtoken.transfer(anAddress, 100000).send({from: wallet.address}).then(tx => {
-            return tx.waitReceipt()
-        }).then(receipt => {
-            console.log(receipt)
-            return goldtoken.balanceOf(wallet.address)
-        }).then(balance => {
-            console.log(balance.toString())
-        })
-    })    
-})
+awaitWrapper()
 ```
-{% endcode %}
+{% endtab %}
+{% endtabs %}
 
 ## Wrapping Up
 
